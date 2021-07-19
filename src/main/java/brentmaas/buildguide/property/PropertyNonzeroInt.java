@@ -17,12 +17,14 @@ public class PropertyNonzeroInt extends Property<Integer>{
 			--this.value;
 			if(this.value == 0) --this.value;
 			valueWidget.setText("" + this.value);
+			valueWidget.setEditableColor(0xFFFFFF);
 			if(onUpdate != null) onUpdate.run();
 		}));
 		buttonList.add(new ButtonWidget(x + 190, y, 20, 20, new LiteralText("+"), button -> {
 			++this.value;
 			if(this.value == 0) ++this.value;
 			valueWidget.setText("" + this.value);
+			valueWidget.setEditableColor(0xFFFFFF);
 			if(onUpdate != null) onUpdate.run();
 		}));
 		buttonList.add(new ButtonWidget(x + 160, y, 30, 20, new TranslatableText("screen.buildguide.set"), button -> {
@@ -49,6 +51,7 @@ public class PropertyNonzeroInt extends Property<Integer>{
 	public void setValue(Integer value) {
 		super.setValue(value);
 		valueWidget.setText("" + value);
+		valueWidget.setEditableColor(0xFFFFFF);
 	}
 	
 	public void addTextFields(TextRenderer fr) {
