@@ -22,9 +22,6 @@
       "brentmaas.buildguide.BuildGuide"
     ]
   },
-  "mixins": [
-    "buildguide.mixins.json"
-  ],
 
   "depends": {
     "fabricloader": ">=0.11.6",
