@@ -28,6 +28,7 @@ public class BuildGuide implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		state = new State();
+		state.loadConfig();
 		
 		openBuildGuide = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.buildguide.openbuildguide", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "key.buildguide.category"));
 		
