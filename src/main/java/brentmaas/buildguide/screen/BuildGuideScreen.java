@@ -8,8 +8,8 @@ import brentmaas.buildguide.property.Property;
 import brentmaas.buildguide.shapes.Shape;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3d;
@@ -31,7 +31,7 @@ public class BuildGuideScreen extends Screen{
 	private ButtonWidget buttonShapePrevious = new ButtonWidget(60, 40, 20, 20, new LiteralText("<-"), button -> updateShape(-1));
 	private ButtonWidget buttonShapeNext = new ButtonWidget(140, 40, 20, 20, new LiteralText("->"), button -> updateShape(1));
 	private ButtonWidget buttonBasepos = new ButtonWidget(0, 60, 160, 20, new TranslatableText("screen.buildguide.setbasepos"), button -> setBasePos());
-	private ButtonWidget buttonColours = new ButtonWidget(0, 100, 160, 20, new TranslatableText("screen.buildguide.colours"), button -> MinecraftClient.getInstance().openScreen(new ColoursScreen()));
+	private ButtonWidget buttonColours = new ButtonWidget(0, 100, 160, 20, new TranslatableText("screen.buildguide.colours"), button -> MinecraftClient.getInstance().setScreen(new ColoursScreen()));
 	//It's better off as custom buttons instead of PropertyInt
 	private ButtonWidget buttonBaseposXDecrease = new ButtonWidget(200, 40, 20, 20, new LiteralText("-"), button -> shiftBasePos(-1, 0, 0));
 	private ButtonWidget buttonBaseposXIncrease = new ButtonWidget(300, 40, 20, 20, new LiteralText("+"), button -> shiftBasePos(1, 0, 0));
@@ -87,36 +87,36 @@ public class BuildGuideScreen extends Screen{
 			for(Shape shape: BuildGuide.state.shapeStore) shape.update();
 		}
 		
-		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().openScreen(null));
+		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().setScreen(null));
 		
-		addButton(buttonClose);
-		addButton(buttonShapePrevious);
-		addButton(buttonShapeNext);
-		addButton(buttonBasepos);
-		addButton(buttonColours);
-		addButton(buttonBaseposXDecrease);
-		addButton(buttonBaseposXIncrease);
-		addButton(buttonBaseposYDecrease);
-		addButton(buttonBaseposYIncrease);
-		addButton(buttonBaseposZDecrease);
-		addButton(buttonBaseposZIncrease);
+		addDrawableChild(buttonClose);
+		addDrawableChild(buttonShapePrevious);
+		addDrawableChild(buttonShapeNext);
+		addDrawableChild(buttonBasepos);
+		addDrawableChild(buttonColours);
+		addDrawableChild(buttonBaseposXDecrease);
+		addDrawableChild(buttonBaseposXIncrease);
+		addDrawableChild(buttonBaseposYDecrease);
+		addDrawableChild(buttonBaseposYIncrease);
+		addDrawableChild(buttonBaseposZDecrease);
+		addDrawableChild(buttonBaseposZIncrease);
 		
 		textFieldX = new TextFieldWidget(textRenderer, 220, 40, 50, 20, new LiteralText(""));
 		textFieldX.setText("" + (int) BuildGuide.state.basePos.x);
 		textFieldX.setEditableColor(0xFFFFFF);
-		children.add(textFieldX);
+		addDrawableChild(textFieldX);
 		textFieldY = new TextFieldWidget(textRenderer, 220, 60, 50, 20, new LiteralText(""));
 		textFieldY.setText("" + (int) BuildGuide.state.basePos.y);
 		textFieldY.setEditableColor(0xFFFFFF);
-		children.add(textFieldY);
+		addDrawableChild(textFieldY);
 		textFieldZ = new TextFieldWidget(textRenderer, 220, 80, 50, 20, new LiteralText(""));
 		textFieldZ.setText("" + (int) BuildGuide.state.basePos.z);
 		textFieldZ.setEditableColor(0xFFFFFF);
-		children.add(textFieldZ);
+		addDrawableChild(textFieldZ);
 		
-		addButton(buttonSetX);
-		addButton(buttonSetY);
-		addButton(buttonSetZ);
+		addDrawableChild(buttonSetX);
+		addDrawableChild(buttonSetY);
+		addDrawableChild(buttonSetZ);
 		
 		properties.add(BuildGuide.state.propertyDepthTest);
 		
@@ -124,11 +124,11 @@ public class BuildGuideScreen extends Screen{
 			p.addToBuildGuideScreen(this);
 		}
 		for(Shape s: BuildGuide.state.shapeStore) {
-			s.onDeselectedInGUI();
 			for(Property<?> p: s.properties) {
 				if(p.mightNeedTextFields()) p.addTextFields(textRenderer);
 				p.addToBuildGuideScreen(this);
 			}
+			s.onDeselectedInGUI();
 		}
 		
 		State.getCurrentShape().onSelectedInGUI();
@@ -207,11 +207,7 @@ public class BuildGuideScreen extends Screen{
 		textFieldZ.setEditableColor(0xFFFFFF);
 	}
 	
-	public void addButtonExternal(AbstractButtonWidget button) {
-		addButton(button);
-	}
-	
-	public void addTextFieldExternal(TextFieldWidget tfw) {
-		children.add(tfw);
+	public void addWidgetExternal(ClickableWidget ClickableWidget) {
+		addDrawableChild(ClickableWidget);
 	}
 }

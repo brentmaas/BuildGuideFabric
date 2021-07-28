@@ -5,7 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import brentmaas.buildguide.screen.BuildGuideScreen;
@@ -15,7 +16,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
@@ -36,13 +38,13 @@ public class BuildGuide implements ClientModInitializer {
 			MinecraftClient.getInstance().getProfiler().push("buildguide");
 			
 			if(BuildGuide.state.basePos != null && !(State.getCurrentShape() instanceof ShapeEmpty)) {
+				//https://github.com/JackFred2/WhereIsIt/blob/master/src/main/java/red/jackf/whereisit/client/RenderUtils.java
+				RenderSystem.setShader(GameRenderer::getPositionColorShader);
+				
 				MatrixStack stack = client.matrixStack();
 				stack.push();
-				Vec3d projectedView = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+				Vec3d projectedView = client.camera().getPos();
 				stack.translate(-projectedView.x + BuildGuide.state.basePos.x, -projectedView.y + BuildGuide.state.basePos.y, -projectedView.z + BuildGuide.state.basePos.z);
-				
-				RenderSystem.pushMatrix();
-				RenderSystem.multMatrix(stack.peek().getModel());
 				
 				boolean toggleTexture = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
 				
@@ -58,18 +60,16 @@ public class BuildGuide implements ClientModInitializer {
 				else if(toggleDepthTest) RenderSystem.enableDepthTest();
 				if(toggleDepthMask) RenderSystem.depthMask(false);
 				RenderSystem.polygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-				RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+				RenderSystem.blendFunc(SrcFactor.SRC_ALPHA, DstFactor.ONE_MINUS_SRC_ALPHA);
 				if(toggleBlend) RenderSystem.enableBlend();
 				
-				State.getCurrentShape().render(stack.peek().getModel());
+				State.getCurrentShape().render(stack.peek().getModel(), client.projectionMatrix());
 				
 				if(toggleBlend) RenderSystem.disableBlend();
 				if(toggleDepthTest && hasDepthTest) RenderSystem.enableDepthTest();
 				else if(toggleDepthTest) RenderSystem.disableDepthTest();
 				if(toggleDepthMask) RenderSystem.depthMask(true);
 				if(toggleTexture) RenderSystem.enableTexture();
-				
-				RenderSystem.popMatrix();
 				
 				stack.pop();
 			}
@@ -79,7 +79,7 @@ public class BuildGuide implements ClientModInitializer {
 		
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if(openBuildGuide.wasPressed()) {
-				MinecraftClient.getInstance().openScreen(new BuildGuideScreen());
+				MinecraftClient.getInstance().setScreen(new BuildGuideScreen());
 			}
 		});
 	}

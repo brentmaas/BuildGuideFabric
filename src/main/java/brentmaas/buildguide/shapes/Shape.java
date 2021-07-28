@@ -2,12 +2,13 @@ package brentmaas.buildguide.shapes;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import brentmaas.buildguide.BuildGuide;
 import brentmaas.buildguide.property.Property;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
@@ -18,7 +19,7 @@ public abstract class Shape {
 	private int nBlocks = 0;
 	
 	public Shape() {
-		//buffer = new VertexBuffer(VertexFormats.POSITION_COLOR);
+		
 	}
 	
 	protected abstract void updateShape(BufferBuilder builder);
@@ -28,24 +29,20 @@ public abstract class Shape {
 		nBlocks = -1; //Counteract the add from the base position
 		long t = System.currentTimeMillis();
 		BufferBuilder builder = new BufferBuilder(4); //4 is lowest working. Number of blocks isn't always known, so it'll have to grow on its own
-		builder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
+		builder.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		this.updateShape(builder);
 		addCube(builder, 0.4, 0.4, 0.4, 0.2, BuildGuide.state.colourBaseposR, BuildGuide.state.colourBaseposG, BuildGuide.state.colourBaseposB, BuildGuide.state.colourBaseposA); //Base position
 		builder.end();
 		if(buffer != null) buffer.close();
-		buffer = new VertexBuffer(VertexFormats.POSITION_COLOR);
+		buffer = new VertexBuffer();
 		buffer.upload(builder);
 		if(BuildGuide.state.debugGenerationTimingsEnabled) {
 			BuildGuide.logger.debug("Shape " + getTranslatedName() + " has been generated in " + (System.currentTimeMillis() - t) + " ms");
 		}
 	}
 	
-	public void render(Matrix4f matrix) {
-		this.buffer.bind();
-		VertexFormats.POSITION_COLOR.startDrawing(0);
-		this.buffer.draw(matrix, GL11.GL_QUADS);
-		VertexBuffer.unbind();
-		VertexFormats.POSITION_COLOR.endDrawing();
+	public void render(Matrix4f model, Matrix4f projection) {
+		this.buffer.setShader(model, projection, RenderSystem.getShader());
 	}
 	
 	protected void addCube(BufferBuilder buffer, double x, double y, double z, double s, float r, float g, float b, float a) {

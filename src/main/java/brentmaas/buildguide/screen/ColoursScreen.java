@@ -15,7 +15,7 @@ public class ColoursScreen extends Screen{
 	private String titleShape;
 	private String titleBasepos;
 	
-	private ButtonWidget buttonBack = new ButtonWidget(0, 0, 20, 20, new LiteralText("<-"), ButtonWidget -> MinecraftClient.getInstance().openScreen(new BuildGuideScreen()));
+	private ButtonWidget buttonBack = new ButtonWidget(0, 0, 20, 20, new LiteralText("<-"), ButtonWidget -> MinecraftClient.getInstance().setScreen(new BuildGuideScreen()));
 	private Slider sliderShapeR;
 	private Slider sliderShapeG;
 	private Slider sliderShapeB;
@@ -81,19 +81,19 @@ public class ColoursScreen extends Screen{
 			State.updateCurrentShape();
 		});
 		
-		addButton(buttonBack);
-		addButton(sliderShapeR);
-		addButton(sliderShapeG);
-		addButton(sliderShapeB);
-		addButton(sliderShapeA);
-		addButton(sliderBaseposR);
-		addButton(sliderBaseposG);
-		addButton(sliderBaseposB);
-		addButton(sliderBaseposA);
-		addButton(buttonSetShape);
-		addButton(buttonSetBasepos);
-		addButton(buttonDefaultShape);
-		addButton(buttonDefaultBasepos);
+		addDrawableChild(buttonBack);
+		addDrawableChild(sliderShapeR);
+		addDrawableChild(sliderShapeG);
+		addDrawableChild(sliderShapeB);
+		addDrawableChild(sliderShapeA);
+		addDrawableChild(sliderBaseposR);
+		addDrawableChild(sliderBaseposG);
+		addDrawableChild(sliderBaseposB);
+		addDrawableChild(sliderBaseposA);
+		addDrawableChild(buttonSetShape);
+		addDrawableChild(buttonSetBasepos);
+		addDrawableChild(buttonDefaultShape);
+		addDrawableChild(buttonDefaultBasepos);
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ public class ShapeEmpty extends Shape{
 	}
 	
 	@Override
-	public void render(Matrix4f matrix) {
+	public void render(Matrix4f model, Matrix4f projection) {
 		
 	}
 	
