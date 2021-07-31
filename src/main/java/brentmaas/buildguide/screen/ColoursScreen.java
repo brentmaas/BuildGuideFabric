@@ -47,8 +47,22 @@ public class ColoursScreen extends Screen{
 		sliderBaseposB = new Slider(120, 80, 100, 20, new LiteralText("B"), 0.0, 1.0, BuildGuide.state.colourBaseposB);
 		sliderBaseposA = new Slider(120, 100, 100, 20, new LiteralText("A"), 0.0, 1.0, BuildGuide.state.colourBaseposA);
 		
-		buttonSetShape = new ButtonWidget(0, 120, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> State.updateCurrentShape());
-		buttonSetBasepos = new ButtonWidget(120, 120, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> State.updateCurrentShape());
+		buttonSetShape = new ButtonWidget(0, 120, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> {
+			BuildGuide.state.colourShapeR = (float) sliderShapeR.getValue();
+			BuildGuide.state.colourShapeG = (float) sliderShapeG.getValue();
+			BuildGuide.state.colourShapeB = (float) sliderShapeB.getValue();
+			BuildGuide.state.colourShapeA = (float) sliderShapeA.getValue();
+			
+			State.updateCurrentShape();
+		});
+		buttonSetBasepos = new ButtonWidget(120, 120, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> {
+			BuildGuide.state.colourBaseposR = (float) sliderBaseposR.getValue();
+			BuildGuide.state.colourBaseposG = (float) sliderBaseposG.getValue();
+			BuildGuide.state.colourBaseposB = (float) sliderBaseposB.getValue();
+			BuildGuide.state.colourBaseposA = (float) sliderBaseposA.getValue();
+			
+			State.updateCurrentShape();
+		});
 		
 		buttonDefaultShape = new ButtonWidget(0, 140, 100, 20, new TranslatableText("screen.buildguide.default"), ButtonWidget -> {
 			sliderShapeR.setManualValue(1.0);
@@ -107,29 +121,6 @@ public class ColoursScreen extends Screen{
 		textRenderer.drawWithShadow(matrixStack, title.getString(), (width - textRenderer.getWidth(title.getString())) / 2, 5, 0xFFFFFF);
 		textRenderer.drawWithShadow(matrixStack, titleShape, (100 - textRenderer.getWidth(titleShape)) / 2, 25, 0xFFFFFF);
 		textRenderer.drawWithShadow(matrixStack, titleBasepos, 120 + (100 - textRenderer.getWidth(titleBasepos)) / 2, 25, 0xFFFFFF);
-		
-		BuildGuide.state.colourShapeR = (float) sliderShapeR.getValue();
-		BuildGuide.state.colourShapeG = (float) sliderShapeG.getValue();
-		BuildGuide.state.colourShapeB = (float) sliderShapeB.getValue();
-		BuildGuide.state.colourShapeA = (float) sliderShapeA.getValue();
-		BuildGuide.state.colourBaseposR = (float) sliderBaseposR.getValue();
-		BuildGuide.state.colourBaseposG = (float) sliderBaseposG.getValue();
-		BuildGuide.state.colourBaseposB = (float) sliderBaseposB.getValue();
-		BuildGuide.state.colourBaseposA = (float) sliderBaseposA.getValue();
-	}
-	
-	@Override
-	public void onClose() {
-		BuildGuide.state.colourShapeR = (float) sliderShapeR.getValue();
-		BuildGuide.state.colourShapeG = (float) sliderShapeG.getValue();
-		BuildGuide.state.colourShapeB = (float) sliderShapeB.getValue();
-		BuildGuide.state.colourShapeA = (float) sliderShapeA.getValue();
-		BuildGuide.state.colourBaseposR = (float) sliderBaseposR.getValue();
-		BuildGuide.state.colourBaseposG = (float) sliderBaseposG.getValue();
-		BuildGuide.state.colourBaseposB = (float) sliderBaseposB.getValue();
-		BuildGuide.state.colourBaseposA = (float) sliderBaseposA.getValue();
-		
-		super.onClose();
 	}
 	
 	class Slider extends SliderWidget {
