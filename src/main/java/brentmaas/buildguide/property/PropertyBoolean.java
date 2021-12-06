@@ -1,24 +1,20 @@
 package brentmaas.buildguide.property;
 
+import brentmaas.buildguide.screen.widget.CheckboxRunnableButton;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 public class PropertyBoolean extends Property<Boolean>{
-	private CheckboxWidget button;
+	private CheckboxRunnableButton button;
 	
-	public PropertyBoolean(int x, int y, Boolean value, Text name, Runnable onUpdate) {
-		super(x, y, value, name, onUpdate);
-		button = new CheckboxWidget(x + 140, y, 20, 20, new LiteralText(""), value, false); //Definitely not this value so the UI lines up nicely
+	public PropertyBoolean(int slot, Boolean value, Text name, Runnable onUpdate) {
+		super(slot, value, name, onUpdate);
+		button = new CheckboxRunnableButton(140, y, 20, 20, new LiteralText(""), value, false, button -> {
+			this.value = button.isChecked();
+			if(onUpdate != null) onUpdate.run();
+		});
 		buttonList.add(button);
-	}
-	
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, TextRenderer font) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks, font);
-		value = button.isChecked();
-		font.drawWithShadow(matrixStack, name.getString(), x + 5, y + 5, 0xFFFFFF);
 	}
 	
 	public void addTextFields(TextRenderer fr) {
