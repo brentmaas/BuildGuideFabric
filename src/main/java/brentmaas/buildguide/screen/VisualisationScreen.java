@@ -51,22 +51,12 @@ public class VisualisationScreen extends PropertyScreen{
 		
 		buttonSetShape = new ButtonWidget(0, 115, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> {
 			if(StateManager.getState().isShapeAvailable()) {
-				StateManager.getState().getCurrentShape().colourShapeR = (float) sliderShapeR.getValue();
-				StateManager.getState().getCurrentShape().colourShapeG = (float) sliderShapeG.getValue();
-				StateManager.getState().getCurrentShape().colourShapeB = (float) sliderShapeB.getValue();
-				StateManager.getState().getCurrentShape().colourShapeA = (float) sliderShapeA.getValue();
-				
-				StateManager.getState().updateCurrentShape();
+				StateManager.getState().setShapeColour((float) sliderShapeR.getValue(), (float) sliderShapeG.getValue(), (float) sliderShapeB.getValue(), (float) sliderShapeA.getValue());
 			}
 		});
 		buttonSetBasepos = new ButtonWidget(110, 115, 100, 20, new TranslatableText("screen.buildguide.set"), ButtonWidget -> {
 			if(StateManager.getState().isShapeAvailable()) {
-				StateManager.getState().getCurrentShape().colourBaseposR = (float) sliderBaseposR.getValue();
-				StateManager.getState().getCurrentShape().colourBaseposG = (float) sliderBaseposG.getValue();
-				StateManager.getState().getCurrentShape().colourBaseposB = (float) sliderBaseposB.getValue();
-				StateManager.getState().getCurrentShape().colourBaseposA = (float) sliderBaseposA.getValue();
-				
-				StateManager.getState().updateCurrentShape();
+				StateManager.getState().setBaseposColour((float) sliderBaseposR.getValue(), (float) sliderBaseposG.getValue(), (float) sliderBaseposB.getValue(), (float) sliderBaseposA.getValue());
 			}
 		});
 		
@@ -80,11 +70,7 @@ public class VisualisationScreen extends PropertyScreen{
 			sliderShapeB.updateSlider();
 			sliderShapeA.updateSlider();
 			if(StateManager.getState().isShapeAvailable()) {
-				StateManager.getState().getCurrentShape().colourShapeR = 1.0f;
-				StateManager.getState().getCurrentShape().colourShapeG = 1.0f;
-				StateManager.getState().getCurrentShape().colourShapeB = 1.0f;
-				StateManager.getState().getCurrentShape().colourShapeA = 0.5f;
-				StateManager.getState().updateCurrentShape();
+				StateManager.getState().setShapeColour(1.0f, 1.0f, 1.0f, 0.5f);
 			}
 		});
 		buttonDefaultBasepos = new ButtonWidget(110, 135, 100, 20, new TranslatableText("screen.buildguide.default"), ButtonWidget -> {
@@ -97,11 +83,7 @@ public class VisualisationScreen extends PropertyScreen{
 			sliderBaseposB.updateSlider();
 			sliderBaseposA.updateSlider();
 			if(StateManager.getState().isShapeAvailable()) {
-				StateManager.getState().getCurrentShape().colourBaseposR = 1.0f;
-				StateManager.getState().getCurrentShape().colourBaseposG = 0.0f;
-				StateManager.getState().getCurrentShape().colourBaseposB = 0.0f;
-				StateManager.getState().getCurrentShape().colourBaseposA = 0.5f;
-				StateManager.getState().updateCurrentShape();
+				StateManager.getState().setBaseposColour(1.0f, 0.0f, 0.0f, 0.5f);
 			}
 		});
 		
