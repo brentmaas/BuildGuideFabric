@@ -2,7 +2,7 @@ package brentmaas.buildguide.property;
 
 import java.util.ArrayList;
 
-import brentmaas.buildguide.screen.BuildGuideScreen;
+import brentmaas.buildguide.screen.PropertyScreen;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -10,18 +10,23 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public abstract class Property<T> {
-	protected int x, y;
+	protected final static int baseY = 125;
+	protected final static int height = 20;
+	
+	protected int y;
 	public T value;
 	protected Text name;
 	public ArrayList<ClickableWidget> buttonList = new ArrayList<ClickableWidget>();
 	public ArrayList<TextFieldWidget> textFieldList = new ArrayList<TextFieldWidget>();
+	protected boolean visible = true;
 	
-	public Property(int x, int y, T value, Text name, Runnable onUpdate){
-		this.x = x;
-		this.y = y;
+	public Property(int slot, T value, Text name, Runnable onUpdate){
+		y = baseY + slot * height;
 		this.value = value;
 		this.name = name;
 	}
+	
+	public abstract void addTextFields(TextRenderer fr);
 	
 	public void onSelectedInGUI() {
 		for(ClickableWidget b: buttonList) {
@@ -30,6 +35,7 @@ public abstract class Property<T> {
 		for(TextFieldWidget tfw: textFieldList) {
 			tfw.visible = true;
 		}
+		visible = true;
 	}
 	
 	public void onDeselectedInGUI() {
@@ -39,9 +45,10 @@ public abstract class Property<T> {
 		for(TextFieldWidget tfw: textFieldList) {
 			tfw.visible = false;
 		}
+		visible = false;
 	}
 	
-	public void addToBuildGuideScreen(BuildGuideScreen screen) {
+	public void addToPropertyScreen(PropertyScreen screen) {
 		for(ClickableWidget b: buttonList) {
 			screen.addWidgetExternal(b);
 		}
@@ -66,7 +73,12 @@ public abstract class Property<T> {
 		for(TextFieldWidget tfw: textFieldList) {
 			tfw.render(matrixStack, mouseX, mouseY, partialTicks);
 		}
+		drawString(matrixStack, name.getString(), 5, y + 5, 0xFFFFFF, font);
 	}
 	
-	public abstract void addTextFields(TextRenderer fr);
+	protected void drawString(MatrixStack matrixStack, String text, float x, float y, int colour, TextRenderer font) {
+		if(visible) {
+			font.drawWithShadow(matrixStack, text, x, y, colour);
+		}
+	}
 }

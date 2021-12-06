@@ -5,7 +5,7 @@ import net.minecraft.text.Text;
 public class PropertyPositiveInt extends PropertyMinimumInt{
 	
 	
-	public PropertyPositiveInt(int x, int y, int value, Text name, Runnable onUpdate) {
-		super(x, y, value, name, onUpdate, 1);
+	public PropertyPositiveInt(int slot, int value, Text name, Runnable onUpdate) {
+		super(slot, value, name, onUpdate, 1);
 	}
 }
