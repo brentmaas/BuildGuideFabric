@@ -2,7 +2,7 @@ package brentmaas.buildguide.shapes;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import brentmaas.buildguide.BuildGuide;
 import brentmaas.buildguide.Config;
@@ -10,6 +10,7 @@ import brentmaas.buildguide.property.Property;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
@@ -34,7 +35,7 @@ public abstract class Shape {
 	public float colourBaseposA = 0.5f;
 	
 	public Shape() {
-		//buffer = new VertexBuffer(VertexFormats.POSITION_COLOR);
+		
 	}
 	
 	protected abstract void updateShape(BufferBuilder builder);
@@ -44,26 +45,22 @@ public abstract class Shape {
 		nBlocks = -1; //Counteract the add from the base position
 		long t = System.currentTimeMillis();
 		BufferBuilder builder = new BufferBuilder(4); //4 is lowest working. Number of blocks isn't always known, so it'll have to grow on its own
-		builder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
+		builder.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		builder.fixedColor((int) (255 * colourShapeR), (int) (255 * colourShapeG), (int) (255 * colourShapeB), (int) (255 * colourShapeA));
 		this.updateShape(builder);
 		builder.fixedColor((int) (255 * colourBaseposR), (int) (255 * colourBaseposG), (int) (255 * colourBaseposB), (int) (255 * colourBaseposA));
 		addCube(builder, 0.4, 0.4, 0.4, 0.2); //Base position
 		builder.end();
 		if(buffer != null) buffer.close();
-		buffer = new VertexBuffer(VertexFormats.POSITION_COLOR);
+		buffer = new VertexBuffer();
 		buffer.upload(builder);
 		if(Config.debugGenerationTimingsEnabled) {
 			BuildGuide.logger.debug("Shape " + getTranslatedName() + " has been generated in " + (System.currentTimeMillis() - t) + " ms");
 		}
 	}
 	
-	public void render(Matrix4f matrix) {
-		this.buffer.bind();
-		VertexFormats.POSITION_COLOR.startDrawing(0);
-		this.buffer.draw(matrix, GL11.GL_QUADS);
-		VertexBuffer.unbind();
-		VertexFormats.POSITION_COLOR.endDrawing();
+	public void render(Matrix4f model, Matrix4f projection) {
+		this.buffer.setShader(model, projection, RenderSystem.getShader());
 	}
 	
 	protected void addCube(BufferBuilder buffer, double x, double y, double z, double s) {

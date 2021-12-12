@@ -25,6 +25,7 @@ public class ShapeCuboid extends Shape{
 	private PropertyNonzeroInt propertyZ = new PropertyNonzeroInt(2, 3, new LiteralText("Z"), () -> this.update());
 	private PropertyEnum<walls> propertyWalls = new PropertyEnum<walls>(3, walls.ALL, new TranslatableText("property.buildguide.walls"), () -> this.update(), wallsNames);
 	
+	
 	public ShapeCuboid() {
 		super();
 		

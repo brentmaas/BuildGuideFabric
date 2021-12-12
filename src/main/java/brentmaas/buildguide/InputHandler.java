@@ -8,7 +8,7 @@ import brentmaas.buildguide.screen.VisualisationScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 public class InputHandler {
@@ -26,15 +26,15 @@ public class InputHandler {
 	
 	public static void onKeyInput(MinecraftClient client) {
 		if(openBuildGuide.wasPressed()) {
-			MinecraftClient.getInstance().openScreen(new BuildGuideScreen());
+			MinecraftClient.getInstance().setScreen(new BuildGuideScreen());
 		}
 		
 		if(openShapelist.wasPressed() && StateManager.getState().propertyAdvancedMode.value) {
-			MinecraftClient.getInstance().openScreen(new ShapelistScreen());
+			MinecraftClient.getInstance().setScreen(new ShapelistScreen());
 		}
 		
 		if(openVisualisation.wasPressed()) {
-			MinecraftClient.getInstance().openScreen(new VisualisationScreen());
+			MinecraftClient.getInstance().setScreen(new VisualisationScreen());
 		}
 	}
 }

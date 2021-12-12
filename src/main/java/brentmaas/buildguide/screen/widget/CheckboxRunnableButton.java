@@ -17,12 +17,12 @@ public class CheckboxRunnableButton extends CheckboxWidget{
 	}
 	
 	public void setChecked(boolean checked) {
-		//Why did checked have to be private ffs... At least I didn't have to do reflection by using this hack in order to get basic functionality
+		//Why did selected have to be private ffs... At least I didn't have to do reflection by using this hack in order to get basic functionality
 		if(isChecked() != checked) onPress();
 		//this.checked = checked;
 	}
 	
-	public interface IPressable{
+	public interface IPressable {
 		void onPress(CheckboxRunnableButton button);
 	}
 }

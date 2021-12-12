@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import brentmaas.buildguide.property.Property;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
@@ -35,11 +34,7 @@ public class PropertyScreen extends Screen{
 		return false;
 	}
 	
-	public void addButtonExternal(AbstractButtonWidget button) {
-		addButton(button);
-	}
-	
-	public void addTextFieldExternal(TextFieldWidget tfw) {
-		children.add(tfw);
+	public void addWidgetExternal(ClickableWidget widget) {
+		addDrawableChild(widget);
 	}
 }

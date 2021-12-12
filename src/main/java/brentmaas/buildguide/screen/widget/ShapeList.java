@@ -9,9 +9,13 @@ import brentmaas.buildguide.StateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 	private Runnable update;
@@ -20,8 +24,8 @@ public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 		super(minecraft, right - left, bottom - top, top, bottom, slotHeight);
 		this.left = left;
 		this.right = right;
-		method_31322(false); //Disable background part 1
-		method_31323(false); //Disable background part 2
+		setRenderBackground(false);
+		setRenderHorizontalShadows(false);
 		
 		update = updateOnSelected;
 		
@@ -60,8 +64,9 @@ public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 		
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
-		RenderSystem.color4f(0, 0, 0, 0.2f);
-		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+		RenderSystem.setShader(GameRenderer::getPositionShader);
+		RenderSystem.setShaderColor(0, 0, 0, 0.2f);
+		bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION);
 		bufferBuilder.vertex(left, top, 0).next();
 		bufferBuilder.vertex(left, bottom, 0).next();
 		bufferBuilder.vertex(right, bottom, 0).next();
@@ -88,8 +93,9 @@ public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 		
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
-		RenderSystem.color4f(0, 0, 0, 0);
-		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+		RenderSystem.setShader(GameRenderer::getPositionShader);
+		RenderSystem.setShaderColor(0, 0, 0, 0);
+		bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION);
 		bufferBuilder.vertex(left, top - itemHeight - 4, 0.1).next();
 		bufferBuilder.vertex(left, top, 0.1).next();
 		bufferBuilder.vertex(right, top, 0.1).next();
@@ -114,7 +120,7 @@ public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 		return right - 6;
 	}
 	
-	public final class Entry extends AlwaysSelectedEntryListWidget.Entry<ShapeList.Entry>{
+	public final class Entry extends AlwaysSelectedEntryListWidget.Entry<ShapeList.Entry> {
 		private int shapeId;
 		
 		public Entry(int shapeId) {
@@ -137,6 +143,10 @@ public class ShapeList extends AlwaysSelectedEntryListWidget<ShapeList.Entry>{
 		
 		public int getShapeId() {
 			return shapeId;
+		}
+		
+		public Text getNarration() {
+			return new LiteralText(""); //TODO Set translated name of shape as narration
 		}
 	}
 }

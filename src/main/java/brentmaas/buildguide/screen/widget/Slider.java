@@ -15,16 +15,12 @@ public class Slider extends SliderWidget{
 		prefix = name.getString() + ": ";
 	}
 	
-	protected void updateMessage() {
-		setMessage(new LiteralText(prefix + Math.round(10.0 * getValue()) / 10.0));
+	public void updateMessage() {
+		setMessage(new LiteralText(prefix + Math.round(10.0 *  getValue()) / 10.0));
 	}
 	
 	protected void applyValue() {
 		
-	}
-	
-	public void updateSlider() {
-		updateMessage();
 	}
 	
 	public void setManualValue(double value) {

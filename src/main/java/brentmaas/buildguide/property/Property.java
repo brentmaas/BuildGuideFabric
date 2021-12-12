@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import brentmaas.buildguide.screen.PropertyScreen;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -16,7 +16,7 @@ public abstract class Property<T> {
 	protected int y;
 	public T value;
 	protected Text name;
-	public ArrayList<AbstractButtonWidget> buttonList = new ArrayList<AbstractButtonWidget>();
+	public ArrayList<ClickableWidget> buttonList = new ArrayList<ClickableWidget>();
 	public ArrayList<TextFieldWidget> textFieldList = new ArrayList<TextFieldWidget>();
 	protected boolean visible = true;
 	
@@ -29,7 +29,7 @@ public abstract class Property<T> {
 	public abstract void addTextFields(TextRenderer fr);
 	
 	public void onSelectedInGUI() {
-		for(AbstractButtonWidget b: buttonList) {
+		for(ClickableWidget b: buttonList) {
 			b.visible = true;
 		}
 		for(TextFieldWidget tfw: textFieldList) {
@@ -39,7 +39,7 @@ public abstract class Property<T> {
 	}
 	
 	public void onDeselectedInGUI() {
-		for(AbstractButtonWidget b: buttonList) {
+		for(ClickableWidget b: buttonList) {
 			b.visible = false;
 		}
 		for(TextFieldWidget tfw: textFieldList) {
@@ -49,11 +49,11 @@ public abstract class Property<T> {
 	}
 	
 	public void addToPropertyScreen(PropertyScreen screen) {
-		for(AbstractButtonWidget b: buttonList) {
-			screen.addButtonExternal(b);
+		for(ClickableWidget b: buttonList) {
+			screen.addWidgetExternal(b);
 		}
 		for(TextFieldWidget tfw: textFieldList) {
-			screen.addTextFieldExternal(tfw);
+			screen.addWidgetExternal(tfw);
 		}
 	}
 	

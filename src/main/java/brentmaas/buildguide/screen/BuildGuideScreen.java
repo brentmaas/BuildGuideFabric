@@ -21,9 +21,9 @@ public class BuildGuideScreen extends PropertyScreen{
 	//It's better off as custom buttons instead of PropertyEnum
 	private ButtonWidget buttonShapePrevious = new ButtonWidget(60, 25, 20, 20, new LiteralText("<-"), button -> updateShape(-1));
 	private ButtonWidget buttonShapeNext = new ButtonWidget(140, 25, 20, 20, new LiteralText("->"), button -> updateShape(1));
-	private ButtonWidget buttonShapelist = new ButtonWidget(140, 25, 20, 20, new LiteralText("..."), button -> MinecraftClient.getInstance().openScreen(new ShapelistScreen()));
+	private ButtonWidget buttonShapelist = new ButtonWidget(140, 25, 20, 20, new LiteralText("..."), button -> MinecraftClient.getInstance().setScreen(new ShapelistScreen()));
 	private ButtonWidget buttonBasepos = new ButtonWidget(185, 25, 120, 20, new TranslatableText("screen.buildguide.setbasepos"), button -> StateManager.getState().resetBasepos());
-	private ButtonWidget buttonVisualisation = new ButtonWidget(0, 65, 160, 20, new TranslatableText("screen.buildguide.visualisation"), button -> MinecraftClient.getInstance().openScreen(new VisualisationScreen()));
+	private ButtonWidget buttonVisualisation = new ButtonWidget(0, 65, 160, 20, new TranslatableText("screen.buildguide.visualisation"), button -> MinecraftClient.getInstance().setScreen(new VisualisationScreen()));
 	//It's better off as custom buttons instead of PropertyInt
 	private ButtonWidget buttonBaseposXDecrease = new ButtonWidget(185, 45, 20, 20, new LiteralText("-"), button -> shiftBasePos(-1, 0, 0));
 	private ButtonWidget buttonBaseposXIncrease = new ButtonWidget(285, 45, 20, 20, new LiteralText("+"), button -> shiftBasePos(1, 0, 0));
@@ -82,7 +82,7 @@ public class BuildGuideScreen extends PropertyScreen{
 			//Advanced mode shapes should be empty
 		}
 		
-		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().openScreen(null));
+		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().setScreen(null));
 		
 		if(!StateManager.getState().isShapeAvailable()) {
 			buttonBasepos.active = false;
@@ -98,37 +98,37 @@ public class BuildGuideScreen extends PropertyScreen{
 			buttonSetZ.active = false;
 		}
 		
-		addButton(buttonClose);
+		addDrawableChild(buttonClose);
 		if(!StateManager.getState().propertyAdvancedMode.value) {
-			addButton(buttonShapePrevious);
-			addButton(buttonShapeNext);
-		}else {
-			addButton(buttonShapelist);
+			addDrawableChild(buttonShapePrevious);
+			addDrawableChild(buttonShapeNext);
+		} else {
+			addDrawableChild(buttonShapelist);
 		}
-		addButton(buttonBasepos);
-		addButton(buttonVisualisation);
-		addButton(buttonBaseposXDecrease);
-		addButton(buttonBaseposXIncrease);
-		addButton(buttonBaseposYDecrease);
-		addButton(buttonBaseposYIncrease);
-		addButton(buttonBaseposZDecrease);
-		addButton(buttonBaseposZIncrease);
-		addButton(buttonSetX);
-		addButton(buttonSetY);
-		addButton(buttonSetZ);
+		addDrawableChild(buttonBasepos);
+		addDrawableChild(buttonVisualisation);
+		addDrawableChild(buttonBaseposXDecrease);
+		addDrawableChild(buttonBaseposXIncrease);
+		addDrawableChild(buttonBaseposYDecrease);
+		addDrawableChild(buttonBaseposYIncrease);
+		addDrawableChild(buttonBaseposZDecrease);
+		addDrawableChild(buttonBaseposZIncrease);
+		addDrawableChild(buttonSetX);
+		addDrawableChild(buttonSetY);
+		addDrawableChild(buttonSetZ);
 		
 		textFieldX = new TextFieldWidget(textRenderer, 205, 45, 50, 20, new LiteralText(""));
 		textFieldX.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.x : "-");
 		textFieldX.setEditableColor(0xFFFFFF);
-		children.add(textFieldX);
+		addDrawableChild(textFieldX);
 		textFieldY = new TextFieldWidget(textRenderer, 205, 65, 50, 20, new LiteralText(""));
 		textFieldY.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.y : "-");
 		textFieldY.setEditableColor(0xFFFFFF);
-		children.add(textFieldY);
+		addDrawableChild(textFieldY);
 		textFieldZ = new TextFieldWidget(textRenderer, 205, 85, 50, 20, new LiteralText(""));
 		textFieldZ.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.z : "-");
 		textFieldZ.setEditableColor(0xFFFFFF);
-		children.add(textFieldZ);
+		addDrawableChild(textFieldZ);
 		
 		addProperty(StateManager.getState().propertyEnable);
 		addProperty(StateManager.getState().propertyAdvancedMode);

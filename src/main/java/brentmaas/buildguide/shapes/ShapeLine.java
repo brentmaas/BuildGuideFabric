@@ -9,13 +9,13 @@ public class ShapeLine extends Shape{
 	private enum direction{
 		X,
 		Y,
-		Z,
+		Z
 	}
 	
 	private final String[] directionNames = {"X", "Y", "Z"};
 	
 	private PropertyEnum<direction> propertyDir = new PropertyEnum<direction>(0, direction.X, new TranslatableText("property.buildguide.direction"), () -> this.update(), directionNames);
-	private PropertyNonzeroInt propertyLength = new PropertyNonzeroInt(1, 5, new TranslatableText("property.buildguide.length"), () -> this.update());
+	private PropertyNonzeroInt propertyLength = new PropertyNonzeroInt(1, 5, new TranslatableText("property.buildguide.length"), () -> {this.update();});
 	
 	public ShapeLine() {
 		super();

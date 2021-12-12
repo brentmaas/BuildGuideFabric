@@ -7,8 +7,8 @@ import brentmaas.buildguide.shapes.Shape;
 import brentmaas.buildguide.shapes.ShapeRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -27,7 +27,7 @@ public class ShapelistScreen extends Screen{
 	private int newShapeId = 0;
 	
 	private ButtonWidget buttonClose;
-	private ButtonWidget buttonBack = new ButtonWidget(0, 0, 20, 20, new LiteralText("<-"), button -> MinecraftClient.getInstance().openScreen(new BuildGuideScreen()));
+	private ButtonWidget buttonBack = new ButtonWidget(0, 0, 20, 20, new LiteralText("<-"), button -> MinecraftClient.getInstance().setScreen(new BuildGuideScreen()));
 	private ButtonWidget buttonNewShapePrevious = new ButtonWidget(0, 25, 20, 20, new LiteralText("<-"), button -> updateNewShape(-1));
 	private ButtonWidget buttonNewShapeNext = new ButtonWidget(120, 25, 20, 20, new LiteralText("->"), button -> updateNewShape(1));
 	private ButtonWidget buttonAdd = new ButtonWidget(0, 45, 140, 20, new TranslatableText("screen.buildguide.add"), button -> {
@@ -40,9 +40,9 @@ public class ShapelistScreen extends Screen{
 	});
 	private CheckboxRunnableButton buttonVisible = new CheckboxRunnableButton(120, 65, 20, 20, new LiteralText(""), true, false, button -> setShapeVisibility());
 	private ButtonWidget buttonDelete = new ButtonWidget(0, 85, 140, 20, new TranslatableText("screen.buildguide.delete"), button -> {
-		if(shapeList.getSelected() != null) {
-			StateManager.getState().advancedModeShapes.remove(shapeList.getSelected().getShapeId());
-			shapeList.removeEntry(shapeList.getSelected());
+		if(shapeList.getSelectedOrNull() != null) {
+			StateManager.getState().advancedModeShapes.remove(shapeList.getSelectedOrNull().getShapeId());
+			shapeList.removeEntry(shapeList.getSelectedOrNull());
 		}
 		
 		checkActive();
@@ -102,53 +102,54 @@ public class ShapelistScreen extends Screen{
 	}
 	
 	@Override
-	protected void init() {
+	public void init() {
 		titleNewShape = new TranslatableText("screen.buildguide.newshape").getString();
 		titleShapes = new TranslatableText("screen.buildguide.shapes").getString();
 		titleGlobalBasepos = new TranslatableText("screen.buildguide.globalbasepos").getString();
 		titleVisible = new TranslatableText("screen.buildguide.visible").getString();
 		titleNumberOfBlocks = new TranslatableText("screen.buildguide.numberofblocks").getString();
 		
-		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().openScreen(null));
+		buttonClose = new ButtonWidget(this.width - 20, 0, 20, 20, new LiteralText("X"), button -> MinecraftClient.getInstance().setScreen(null));
 		
 		checkActive();
 		
-		addButton(buttonClose);
-		addButton(buttonBack);
-		addButton(buttonNewShapePrevious);
-		addButton(buttonNewShapeNext);
-		addButton(buttonAdd);
-		addButton(buttonVisible);
-		addButton(buttonDelete);
-		addButton(buttonGlobalBasepos);
-		addButton(buttonBaseposXDecrease);
-		addButton(buttonBaseposXIncrease);
-		addButton(buttonBaseposYDecrease);
-		addButton(buttonBaseposYIncrease);
-		addButton(buttonBaseposZDecrease);
-		addButton(buttonBaseposZIncrease);
-		addButton(buttonSetX);
-		addButton(buttonSetY);
-		addButton(buttonSetZ);
+		addDrawableChild(buttonClose);
+		addDrawableChild(buttonBack);
+		addDrawableChild(buttonNewShapePrevious);
+		addDrawableChild(buttonNewShapeNext);
+		addDrawableChild(buttonAdd);
+		addDrawableChild(buttonVisible);
+		addDrawableChild(buttonDelete);
+		addDrawableChild(buttonGlobalBasepos);
+		addDrawableChild(buttonBaseposXDecrease);
+		addDrawableChild(buttonBaseposXIncrease);
+		addDrawableChild(buttonBaseposYDecrease);
+		addDrawableChild(buttonBaseposYIncrease);
+		addDrawableChild(buttonBaseposZDecrease);
+		addDrawableChild(buttonBaseposZIncrease);
+		addDrawableChild(buttonSetX);
+		addDrawableChild(buttonSetY);
+		addDrawableChild(buttonSetZ);
 		
 		textFieldX = new TextFieldWidget(textRenderer, 40, 145, 50, 20, new LiteralText(""));
 		textFieldX.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.x : "-");
 		textFieldX.setEditableColor(0xFFFFFF);
-		children.add(textFieldX);
+		addDrawableChild(textFieldX);
 		textFieldY = new TextFieldWidget(textRenderer, 40, 165, 50, 20, new LiteralText(""));
 		textFieldY.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.y : "-");
 		textFieldY.setEditableColor(0xFFFFFF);
-		children.add(textFieldY);
+		addDrawableChild(textFieldY);
 		textFieldZ = new TextFieldWidget(textRenderer, 40, 185, 50, 20, new LiteralText(""));
 		textFieldZ.setText(StateManager.getState().isShapeAvailable() ? "" + (int) StateManager.getState().getCurrentShape().basePos.z : "-");
 		textFieldZ.setEditableColor(0xFFFFFF);
-		children.add(textFieldZ);
+		addDrawableChild(textFieldZ);
 		
 		shapeList = new ShapeList(client, 150, 300, 25, height, 20, () -> {
 			updateGlobalBasepos();
 			if(StateManager.getState().isShapeAvailable()) buttonVisible.setChecked(StateManager.getState().getCurrentShape().visible);
 		});
-		children.add(shapeList);
+		
+		addSelectableChild(shapeList);
 	}
 	
 	@Override
@@ -196,7 +197,7 @@ public class ShapelistScreen extends Screen{
 			textFieldX.setText("" + (int) StateManager.getState().getCurrentShape().basePos.x);
 			textFieldY.setText("" + (int) StateManager.getState().getCurrentShape().basePos.y);
 			textFieldZ.setText("" + (int) StateManager.getState().getCurrentShape().basePos.z);
-		} else {
+		}else {
 			textFieldX.setText("-");
 			textFieldY.setText("-");
 			textFieldZ.setText("-");
@@ -259,11 +260,7 @@ public class ShapelistScreen extends Screen{
 		}
 	}
 	
-	public void addButtonExternal(AbstractButtonWidget button) {
-		addButton(button);
-	}
-	
-	public void addTextFieldExternal(TextFieldWidget tfw) {
-		children.add(tfw);
+	public void addWidgetExternal(ClickableWidget widget) {
+		addDrawableChild(widget);
 	}
 }

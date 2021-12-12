@@ -16,7 +16,7 @@ public class State {
 	public int iAdvanced = 0;
 	public PropertyBoolean propertyEnable = new PropertyBoolean(-4, false, new TranslatableText("screen.buildguide.enable"), null);
 	public PropertyBoolean propertyDepthTest = new PropertyBoolean(2, true, new TranslatableText("screen.buildguide.depthtest"), null);
-	public PropertyBoolean propertyAdvancedMode = new PropertyBoolean(-2, false, new TranslatableText("screen.buildguide.advancedmode"), () -> MinecraftClient.getInstance().openScreen(new BuildGuideScreen()));
+	public PropertyBoolean propertyAdvancedMode = new PropertyBoolean(-2, false, new TranslatableText("screen.buildguide.advancedmode"), () -> MinecraftClient.getInstance().setScreen(new BuildGuideScreen()));
 	
 	public State() {
 		ArrayList<String> classIdentifiers = ShapeRegistry.getClassIdentifiers();
@@ -70,7 +70,7 @@ public class State {
 	public void setBaseposX(int x) {
 		if(propertyAdvancedMode.value) {
 			advancedModeShapes.get(iAdvanced).setBasepos(x, (int) advancedModeShapes.get(iAdvanced).basePos.y, (int) advancedModeShapes.get(iAdvanced).basePos.z);
-		}else {
+		} else {
 			for(Shape s: simpleModeShapes) s.setBasepos(x, (int) s.basePos.y, (int) s.basePos.z);
 		}
 	}
@@ -78,7 +78,7 @@ public class State {
 	public void setBaseposY(int y) {
 		if(propertyAdvancedMode.value) {
 			advancedModeShapes.get(iAdvanced).setBasepos((int) advancedModeShapes.get(iAdvanced).basePos.x, y, (int) advancedModeShapes.get(iAdvanced).basePos.z);
-		}else {
+		} else {
 			for(Shape s: simpleModeShapes) s.setBasepos((int) s.basePos.x, y, (int) s.basePos.z);
 		}
 	}
@@ -86,7 +86,7 @@ public class State {
 	public void setBaseposZ(int z) {
 		if(propertyAdvancedMode.value) {
 			advancedModeShapes.get(iAdvanced).setBasepos((int) advancedModeShapes.get(iAdvanced).basePos.x, (int) advancedModeShapes.get(iAdvanced).basePos.y, z);
-		}else {
+		} else {
 			for(Shape s: simpleModeShapes) s.setBasepos((int) s.basePos.x, (int) s.basePos.y, z);
 		}
 	}
