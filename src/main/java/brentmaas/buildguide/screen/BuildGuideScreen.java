@@ -9,7 +9,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.Vec3d;
 
 public class BuildGuideScreen extends PropertyScreen{
 	private String titleGlobalProperties;
@@ -190,7 +189,7 @@ public class BuildGuideScreen extends PropertyScreen{
 	}
 	
 	private void shiftBasePos(int dx, int dy, int dz) {
-		StateManager.getState().getCurrentShape().basePos = new Vec3d(StateManager.getState().getCurrentShape().basePos.x + dx, StateManager.getState().getCurrentShape().basePos.y + dy, StateManager.getState().getCurrentShape().basePos.z + dz);
+		StateManager.getState().shiftBasepos(dx, dy, dz);
 		textFieldX.setText("" + (int) StateManager.getState().getCurrentShape().basePos.x);
 		textFieldY.setText("" + (int) StateManager.getState().getCurrentShape().basePos.y);
 		textFieldZ.setText("" + (int) StateManager.getState().getCurrentShape().basePos.z);
