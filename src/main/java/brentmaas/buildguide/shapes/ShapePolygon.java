@@ -21,7 +21,7 @@ public class ShapePolygon extends Shape{
 	}
 
 	private String[] directionNames = {"X", "Y", "Z"};
-	private String[] rotationNames = {"0°", "90°", "180°", "270°"};
+	private String[] rotationNames = {"0\u00B0", "90\u00B0", "180\u00B0", "270\u00B0"};
 	
 	//Constant arrays for rotation
 	private static final int[] rotXX = {1, 0, -1, 0};
