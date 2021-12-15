@@ -47,7 +47,8 @@ public class InputHandler {
 			MinecraftClient.getInstance().setScreen(new VisualisationScreen());
 		}
 		 
-		if(toggleEnable.wasPressed()) { 
+		if(toggleEnable.wasPressed()) {
+			StateManager.getState().initCheck();
 			StateManager.getState().propertyEnable.setValue(!StateManager.getState().propertyEnable.value); 
 		} 
 		 
