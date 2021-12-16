@@ -145,7 +145,18 @@ public class ShapelistScreen extends Screen{
 		addDrawableChild(textFieldZ);
 		
 		shapeList = new ShapeList(client, 150, 300, 25, height, 20, () -> {
-			updateGlobalBasepos();
+			if(StateManager.getState().isShapeAvailable()) {
+				textFieldX.setText("" + (int) StateManager.getState().getCurrentShape().basePos.x);
+				textFieldY.setText("" + (int) StateManager.getState().getCurrentShape().basePos.y);
+				textFieldZ.setText("" + (int) StateManager.getState().getCurrentShape().basePos.z);
+			} else {
+				textFieldX.setText("-");
+				textFieldY.setText("-");
+				textFieldZ.setText("-");
+			}
+			textFieldX.setEditableColor(0xFFFFFF);
+			textFieldY.setEditableColor(0xFFFFFF);
+			textFieldZ.setEditableColor(0xFFFFFF);
 			if(StateManager.getState().isShapeAvailable()) buttonVisible.setChecked(StateManager.getState().getCurrentShape().visible);
 		});
 		
@@ -192,21 +203,6 @@ public class ShapelistScreen extends Screen{
 		shapeList.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
-	private void updateGlobalBasepos() {
-		if(StateManager.getState().isShapeAvailable()) {
-			textFieldX.setText("" + (int) StateManager.getState().getCurrentShape().basePos.x);
-			textFieldY.setText("" + (int) StateManager.getState().getCurrentShape().basePos.y);
-			textFieldZ.setText("" + (int) StateManager.getState().getCurrentShape().basePos.z);
-		}else {
-			textFieldX.setText("-");
-			textFieldY.setText("-");
-			textFieldZ.setText("-");
-		}
-		textFieldX.setEditableColor(0xFFFFFF);
-		textFieldY.setEditableColor(0xFFFFFF);
-		textFieldZ.setEditableColor(0xFFFFFF);
-	}
-	
 	private void updateNewShape(int di) {
 		newShapeId = Math.floorMod(newShapeId + di, ShapeRegistry.getNumberOfShapes());
 	}
@@ -215,7 +211,33 @@ public class ShapelistScreen extends Screen{
 		for(Shape s: StateManager.getState().advancedModeShapes) {
 			s.shiftBasepos(dx, dy, dz);
 		}
-		updateGlobalBasepos();
+		if(StateManager.getState().isShapeAvailable()) {
+			if(dx != 0) {
+				textFieldX.setText("" + (int) StateManager.getState().getCurrentShape().basePos.x);
+				textFieldX.setEditableColor(0xFFFFFF);
+			}
+			if(dy != 0) {
+				textFieldY.setText("" + (int) StateManager.getState().getCurrentShape().basePos.y);
+				textFieldY.setEditableColor(0xFFFFFF);
+			}
+			if(dz != 0) {
+				textFieldZ.setText("" + (int) StateManager.getState().getCurrentShape().basePos.z);
+				textFieldZ.setEditableColor(0xFFFFFF);
+			}
+		} else {
+			if(dx != 0) {
+				textFieldX.setText("-");
+				textFieldX.setEditableColor(0xFFFFFF);
+			}
+			if(dy != 0) {
+				textFieldY.setText("-");
+				textFieldY.setEditableColor(0xFFFFFF);
+			}
+			if(dz != 0) {
+				textFieldZ.setText("-");
+				textFieldZ.setEditableColor(0xFFFFFF);
+			}
+		}
 	}
 	
 	private void setGlobalBasePos() {
