@@ -14,8 +14,8 @@ public class ShapeLine extends Shape{
 	
 	private final String[] directionNames = {"X", "Y", "Z"};
 	
-	private PropertyEnum<direction> propertyDir = new PropertyEnum<direction>(0, direction.X, new TranslatableText("property.buildguide.direction"), () -> this.update(), directionNames);
-	private PropertyNonzeroInt propertyLength = new PropertyNonzeroInt(1, 5, new TranslatableText("property.buildguide.length"), () -> {this.update();});
+	private PropertyEnum<direction> propertyDir = new PropertyEnum<direction>(0, direction.X, new TranslatableText("property.buildguide.direction"), () -> update(), directionNames);
+	private PropertyNonzeroInt propertyLength = new PropertyNonzeroInt(1, 5, new TranslatableText("property.buildguide.length"), () -> {update();});
 	
 	public ShapeLine() {
 		super();

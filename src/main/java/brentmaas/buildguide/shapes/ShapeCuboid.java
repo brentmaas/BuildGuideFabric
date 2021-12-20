@@ -20,10 +20,10 @@ public class ShapeCuboid extends Shape{
 	
 	private String[] wallsNames = {"XYZ", "X", "Y", "Z", "XY", "XZ", "YZ", "-"};
 	
-	private PropertyNonzeroInt propertyX = new PropertyNonzeroInt(0, 3, new LiteralText("X"), () -> this.update());
-	private PropertyNonzeroInt propertyY = new PropertyNonzeroInt(1, 3, new LiteralText("Y"), () -> this.update());
-	private PropertyNonzeroInt propertyZ = new PropertyNonzeroInt(2, 3, new LiteralText("Z"), () -> this.update());
-	private PropertyEnum<walls> propertyWalls = new PropertyEnum<walls>(3, walls.ALL, new TranslatableText("property.buildguide.walls"), () -> this.update(), wallsNames);
+	private PropertyNonzeroInt propertyX = new PropertyNonzeroInt(0, 3, new LiteralText("X"), () -> update());
+	private PropertyNonzeroInt propertyY = new PropertyNonzeroInt(1, 3, new LiteralText("Y"), () -> update());
+	private PropertyNonzeroInt propertyZ = new PropertyNonzeroInt(2, 3, new LiteralText("Z"), () -> update());
+	private PropertyEnum<walls> propertyWalls = new PropertyEnum<walls>(3, walls.ALL, new TranslatableText("property.buildguide.walls"), () -> update(), wallsNames);
 	
 	
 	public ShapeCuboid() {
