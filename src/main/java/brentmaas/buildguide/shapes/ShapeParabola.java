@@ -25,7 +25,7 @@ public class ShapeParabola extends Shape{
 	private static final int[] rotYX = {0, 1, 0, -1};
 	
 	private String[] directionNames = {"X", "Y", "Z"};
-	private String[] rotationNames = {"0°", "90°", "180°", "270°"};
+	private String[] rotationNames = {"0\u00B0", "90\u00B0", "180\u00B0", "270\u00B0"};
 	
 	private PropertyEnum<direction> propertyDir = new PropertyEnum<direction>(0, direction.X, new TranslatableText("property.buildguide.direction"), () -> update(), directionNames);
 	private PropertyEnum<rotation> propertyRot = new PropertyEnum<rotation>(1, rotation.ROT0, new TranslatableText("property.buildguide.rotation"), () -> update(), rotationNames);
